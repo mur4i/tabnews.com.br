@@ -47,6 +47,7 @@ async function findAll(values = {}, options = {}) {
       ${values.count ? 'LIMIT 1' : 'LIMIT $1 OFFSET $2'}
       )
       ${selectClause}
+      ${values.count ? '' : orderByClause}
       ;`;
 
   if (values.where) {
