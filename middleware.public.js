@@ -8,9 +8,14 @@ export const config = {
 
 export async function middleware(request) {
   console.log({
-    host_get: request.headers.get('host'),
-    VERCEL_URL: process.env.VERCEL_URL,
+    'process.env.NODE_ENV': process.env.NODE_ENV,
+    'process.env.VERCEL_ENV': process.env.VERCEL_ENV,
+    host: request.headers.get('host'),
+    will_redirect: process.env.VERCEL_ENV === 'production' && request.headers.get('host') != 'www.tabnews.com.br',
   });
+  if (process.env.VERCEL_ENV === 'production' && request.headers.get('host') != 'www.tabnews.com.br') {
+    return NextResponse.redirect(`https://www.tabnews.com.br${request.nextUrl.pathname}`);
+  }
 
   const url = request.nextUrl;
 
